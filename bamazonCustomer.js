@@ -27,16 +27,17 @@ function start() {
 
 //Display items available for sale(id, name, price)
 function displayProducts() {
+    console.log(chalk.green.bold('Welcome to Bamazon!'))
     connection.query("SELECT item_id, product_name, FORMAT(price, 2) price, stock_quantity FROM products WHERE stock_quantity > 0", function (err, results) {
         if (err) throw err
         const table = new Table({
-            head: [chalk.blue('ID'), chalk.green('Product'), chalk.yellow('Price')]
+            head: [chalk.magenta.bold('ID'), chalk.blue.bold('Product'), chalk.blue.bold('Price')]
             , colWidths: [10, 60, 10]
         })
         results.forEach(item => {
             productArray.push(item)
             table.push(
-                [item.item_id, item.product_name, item.price]
+                [chalk.magenta(item.item_id), item.product_name, chalk.yellow(item.price)]
             )
         })
         console.log(table.toString())
@@ -44,15 +45,30 @@ function displayProducts() {
     })
 }
 
+//Function to test appropriate value is entered for product number
+function productNumberCheck(value) {
+    if (/^\d+$/.test(value) && value < productArray.length + 1 && value > 0) {
+        return true
+    }
+    return chalk.red('Please enter a valid number')
+}
+
+//Function to test appropriate value is entered for quantity
+function quantityNumberCheck(value) {
+    if (/^\d+$/.test(value)) {
+        return true
+    }
+    return chalk.red('Please enter a valid number')
+}
+
 //Find out what user wants to purchase
 function userPrompt() {
-
     inquirer.prompt([
         {
             type: 'input',
             message: 'Enter ID of product you would like to purchase: ',
             name: 'id',
-            validate: requireNumber
+            validate: productNumberCheck
         }
     ]).then(answer => {
         let id = answer.id
@@ -61,13 +77,7 @@ function userPrompt() {
     })
 }
 
-//Function to test appropriate value is entered
-function requireNumber(value) {
-    if (/^\d+$/.test(value)) {
-        return true
-    }
-    return `Please enter a number`
-}
+
 
 //Find out how many of the item the user wants to purchase
 function orderQuantity(id, productChoice) {
@@ -76,7 +86,7 @@ function orderQuantity(id, productChoice) {
             type: 'input',
             message: `How many ${productChoice.product_name} would you like to purchase? `,
             name: 'quantity',
-            validate: requireNumber
+            validate: quantityNumberCheck
         }
     ]).then(answer => {
         //If stock is less than quantity requested inform user insufficient quantity available
@@ -108,6 +118,7 @@ function orderMorePrompt() {
         if (answer.confirm) {
             displayProducts()
         } else {
+            console.log(chalk.red('Shutting down Bamazon.'))
             connection.end()
         }
     })
