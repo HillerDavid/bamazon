@@ -28,7 +28,7 @@ function startPrompt() {
         {
             type: 'list',
             message: '\n\rSelect an option:',
-            choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product'],
+            choices: ['View Products for Sale', 'View Low Inventory', 'Restock Inventory', 'Add New Product'],
             name: 'choice'
         }
     ]).then(answer => {
@@ -39,7 +39,7 @@ function startPrompt() {
             case 'View Low Inventory':
                 viewLowProduct()
                 break
-            case 'Add to Inventory':
+            case 'Restock Inventory':
                 restockInventory()
                 break
             case 'Add New Product':
@@ -104,7 +104,7 @@ function orderQuantity(id, productChoice) {
     ]).then(answer => {
         connection.query("UPDATE products SET stock_quantity = stock_quantity + ? WHERE item_id = ?", [answer.quantity, productArray[id].item_id - 1], (err, results) => {
             if (err) throw err
-            console.log(`Ordered placed.`)
+            console.log(`Restock order placed.`)
             startPrompt()
         })
     })
@@ -146,8 +146,8 @@ function addNewProduct() {
         }
         connection.query('INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES(?, ?, ?, ?)', Object.values(newItem), (err, response) => {
             if (err) throw err
-            console.log(response)
             console.log(`${newItem.name} added to inventory.`)
+            startPrompt()
         })
     })
 }

@@ -21,6 +21,7 @@ start()
 function start() {
     connection.connect(err => {
         if (err) throw err
+        console.log(chalk.green.bold('Welcome to Bamazon!'))
         displayProducts()
     })
 }
@@ -28,7 +29,6 @@ function start() {
 //Display items available for sale(id, name, price, stock quantity)
 function displayProducts() {
     productArray = []
-    console.log(chalk.green.bold('Welcome to Bamazon!'))
     connection.query("SELECT item_id, product_name, FORMAT(price, 2) price, stock_quantity FROM products WHERE stock_quantity > 0", function (err, results) {
         if (err) throw err
         const table = new Table({
