@@ -25,8 +25,9 @@ function start() {
     })
 }
 
-//Display items available for sale(id, name, price)
+//Display items available for sale(id, name, price, stock quantity)
 function displayProducts() {
+    productArray = []
     console.log(chalk.green.bold('Welcome to Bamazon!'))
     connection.query("SELECT item_id, product_name, FORMAT(price, 2) price, stock_quantity FROM products WHERE stock_quantity > 0", function (err, results) {
         if (err) throw err
@@ -77,8 +78,6 @@ function userPrompt() {
     })
 }
 
-
-
 //Find out how many of the item the user wants to purchase
 function orderQuantity(id, productChoice) {
     inquirer.prompt([
@@ -94,13 +93,13 @@ function orderQuantity(id, productChoice) {
             console.log('Insufficient quantity!')
             orderMorePrompt()
         }
-        //If stock is more or = to quantity requested update stock in database and display total cost of purchase
+        //If stock is greater than = to quantity requested update stock in database and display total cost of purchase
         else {
             let totalCost = productChoice.price * answer.quantity
             connection.query(`UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?`, [answer.quantity, productArray[id].item_id - 1], function (err, results) {
                 if (err) throw err
                 console.log(`Total cost: $${totalCost.toFixed(2)}`)
-                orderMorePrompt() 
+                orderMorePrompt()
             })
         }
     })
