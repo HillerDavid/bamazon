@@ -38,7 +38,7 @@ function displayProducts() {
         results.forEach(item => {
             productArray.push(item)
             table.push(
-                [chalk.magenta(item.item_id), item.product_name, chalk.yellow(item.price)]
+                [chalk.magenta(item.item_id), item.product_name, chalk.yellow(`$${item.price}`)]
             )
         })
         console.log(table.toString())
