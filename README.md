@@ -35,7 +35,7 @@ Amazon-like storefront CLI app
 
 ![CustomerOrderMore](gifs/customer-restart.gif)
 
-### Launch as Manager
+## Launch as Manager
 - Enter ```node bamazonManager.js```
 ![ManagerStart](gifs/manager-start.gif)
 
@@ -55,4 +55,5 @@ Amazon-like storefront CLI app
 
 ### Add New Product to Inventory
 - Select ```Add New Product```
+
 ![ManagerAddProduct](gifs/manager-add-product.gif)
