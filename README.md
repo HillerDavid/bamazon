@@ -32,6 +32,7 @@ Amazon-like storefront CLI app
 ### Order More or Quit
 - Enter ```y``` to go back to order selection
 - Enter ```n``` to quit
+
 ![CustomerOrderMore](gifs/customer-restart.gif)
 
 ### Launch as Manager
@@ -54,4 +55,4 @@ Amazon-like storefront CLI app
 
 ### Add New Product to Inventory
 - Select ```Add New Product```
-![ManagerAddProduct](gifs/manager-add-product)
+![ManagerAddProduct](gifs/manager-add-product.gif)
